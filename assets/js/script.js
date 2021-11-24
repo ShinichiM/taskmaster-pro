@@ -87,7 +87,7 @@ $(".list-group").on("blur", "textarea", function(){
   $(this).replaceWith(taskP);
 });
 
-
+// Edit task due date
 $(".list-group").on("click", "span", function(){
   // get current text
   var date = $(this)
@@ -103,12 +103,21 @@ $(".list-group").on("click", "span", function(){
   // swap out elements
   $(this).replaceWith(dateInput);
 
+  // enable  jquery ui datepicker
+  dateInput.datepicker({
+    minDate: 1,
+    onClose: function(){
+      // when calendar is closed, force a "change" event on the dataInput
+      $(this).trigger("change");
+    }
+  });
+
   // automatically focus on new element
   dateInput.trigger("focus");
 });
 
-// value of due date was changed
-$(".list-group").on("blur", "input[type='text']", function(){
+// On due date edit blur, store edited data and re-create due date element
+$(".list-group").on("change", "input[type='text']", function(){
   // get current text
   var date = $(this)
   .val()
@@ -234,6 +243,7 @@ $(".card .list-group").sortable({
   }
 });
 
+// Allows droppable elements to delete button.
 $("#trash").droppable({
   accept: ".card .list-group-item",
   tolerance: "touch",
@@ -249,3 +259,7 @@ $("#trash").droppable({
   }
 });
 
+// Add date picker to modal add task due date
+$("#modalDueDate").datepicker({
+  minDate: 1
+});
